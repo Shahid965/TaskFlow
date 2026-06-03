@@ -1,0 +1,51 @@
+{
+  "name": "TaskFlow OS",
+  "short_name": "TaskFlow",
+  "description": "Your personal productivity workspace — manage tasks across all your devices with real-time sync.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0D1117",
+  "theme_color": "#6366F1",
+  "lang": "en",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "My Workspaces",
+      "short_name": "Workspaces",
+      "description": "View all your workspaces",
+      "url": "./index.html#workspaces",
+      "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "Open your productivity dashboard",
+      "url": "./index.html#dashboard",
+      "icons": [{ "src": "assets/icons/icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "screenshots": [],
+  "prefer_related_applications": false
+}

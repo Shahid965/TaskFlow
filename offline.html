@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>You're Offline — TaskFlow OS</title>
+  <link rel="icon" type="image/png" href="assets/icons/icon-192.png" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0D1117;
+      --bg-surface: #161B27;
+      --primary: #6366F1;
+      --secondary: #8B5CF6;
+      --text: #F1F5F9;
+      --text-2: #94A3B8;
+      --text-3: #64748B;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Animated background blobs */
+    .bg-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      pointer-events: none;
+    }
+    .blob-1 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #6366F1, #8B5CF6);
+      top: -100px; left: -100px;
+      animation: pulse 6s ease-in-out infinite;
+    }
+    .blob-2 {
+      width: 300px; height: 300px;
+      background: radial-gradient(circle, #EC4899, #6366F1);
+      bottom: -80px; right: -80px;
+      animation: pulse 6s ease-in-out infinite reverse;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.1); }
+    }
+
+    /* Card */
+    .card {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 56px 48px;
+      background: rgba(22, 27, 39, 0.85);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 24px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.5);
+      max-width: 440px;
+      width: 90%;
+    }
+
+    /* Icon */
+    .icon-wrap {
+      width: 80px; height: 80px;
+      background: linear-gradient(135deg, rgba(99,102,241,0.2), rgba(139,92,246,0.1));
+      border: 1px solid rgba(99,102,241,0.3);
+      border-radius: 20px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 24px;
+      animation: iconFloat 3s ease-in-out infinite;
+    }
+    @keyframes iconFloat {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-6px); }
+    }
+
+    /* WiFi off icon */
+    .wifi-icon {
+      color: #6366F1;
+    }
+
+    /* Brand */
+    .brand {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #6366F1;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      background: linear-gradient(135deg, #F1F5F9, #94A3B8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    p {
+      font-size: 15px;
+      color: var(--text-2);
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    /* Dots animation */
+    .status-dots {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 32px;
+    }
+    .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      animation: dotBounce 1.4s ease-in-out infinite;
+    }
+    .dot:nth-child(2) { animation-delay: 0.2s; background: var(--secondary); }
+    .dot:nth-child(3) { animation-delay: 0.4s; background: #EC4899; }
+    @keyframes dotBounce {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+      40%            { transform: scale(1);   opacity: 1; }
+    }
+
+    /* Buttons */
+    .btn-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-size: 14px; font-weight: 600;
+      cursor: pointer; border: none;
+      font-family: inherit;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #6366F1, #8B5CF6);
+      color: white;
+      box-shadow: 0 4px 16px rgba(99,102,241,0.35);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,0.45); }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-2);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+
+    /* Info strip */
+    .info-strip {
+      margin-top: 28px;
+      padding: 14px 18px;
+      background: rgba(99,102,241,0.08);
+      border: 1px solid rgba(99,102,241,0.15);
+      border-radius: 12px;
+      font-size: 13px;
+      color: var(--text-3);
+      line-height: 1.6;
+    }
+    .info-strip strong { color: var(--primary); }
+
+    /* Connection status indicator */
+    #connection-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-3);
+      margin-top: 20px;
+    }
+    .status-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: #EF4444;
+      animation: none;
+    }
+    .status-dot.online { background: #10B981; }
+  </style>
+</head>
+<body>
+
+  <!-- Background blobs -->
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
+
+  <!-- Main Card -->
+  <div class="card">
+
+    <!-- App Icon -->
+    <div class="icon-wrap">
+      <svg class="wifi-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <line x1="1" y1="1" x2="23" y2="23"/>
+        <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/>
+        <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/>
+        <path d="M10.71 5.05A16 16 0 0 1 22.56 9"/>
+        <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/>
+        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"/>
+        <circle cx="12" cy="20" r="1" fill="currentColor"/>
+      </svg>
+    </div>
+
+    <div class="brand">TaskFlow OS</div>
+    <h1>You're Offline</h1>
+    <p>
+      No internet connection right now.<br/>
+      Your tasks are safely saved and will sync<br/>
+      automatically when you reconnect.
+    </p>
+
+    <!-- Animated waiting dots -->
+    <div class="status-dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="btn-group">
+      <button class="btn btn-primary" onclick="tryReconnect()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>
+        Try Again
+      </button>
+      <a class="btn btn-outline" href="./index.html">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Go to App
+      </a>
+    </div>
+
+    <!-- Info Strip -->
+    <div class="info-strip">
+      <strong>💡 Good news:</strong> TaskFlow OS has offline support. Data you've already loaded will still be visible, and any changes you make will sync when you're back online.
+    </div>
+
+    <!-- Live connection status -->
+    <div id="connection-status">
+      <div class="status-dot" id="status-dot"></div>
+      <span id="status-text">No connection detected</span>
+    </div>
+
+  </div>
+
+  <script>
+    // Auto-detect when connection comes back
+    function checkConnection() {
+      const dot  = document.getElementById('status-dot');
+      const text = document.getElementById('status-text');
+
+      if (navigator.onLine) {
+        dot.classList.add('online');
+        text.textContent = 'Connection restored! Redirecting...';
+        setTimeout(() => { window.location.href = './index.html'; }, 1500);
+      } else {
+        dot.classList.remove('online');
+        text.textContent = 'No connection detected';
+      }
+    }
+
+    function tryReconnect() {
+      checkConnection();
+      if (!navigator.onLine) {
+        const btn = document.querySelector('.btn-primary');
+        btn.textContent = 'Still offline...';
+        setTimeout(() => {
+          btn.innerHTML = `
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.5"/></svg>
+            Try Again
+          `;
+        }, 2000);
+      }
+    }
+
+    // Listen for connection events
+    window.addEventListener('online',  checkConnection);
+    window.addEventListener('offline', checkConnection);
+
+    // Check immediately
+    checkConnection();
+  </script>
+
+</body>
+</html>
