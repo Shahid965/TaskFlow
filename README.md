@@ -1,3 +1,5 @@
+TaskFLow Live Link - https://taskflow-shah.netlify.app/
+
 # TaskFlow OS v2 — Setup Guide
 
 ## ⚡ Quick Start (5 Minutes)
@@ -172,5 +174,13 @@ This ensures users can only access their own data.
 - **Google Fonts (Inter)** — Typography
 
 ---
+
+![HTML](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)
+![CSS](https://img.shields.io/badge/CSS3-1572B6?style=flat&logo=css3&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=javascript&logoColor=black)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat&logo=firebase&logoColor=black)
+![PWA](https://img.shields.io/badge/PWA-5A0FC8?style=flat&logo=pwa&logoColor=white)
+![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=flat&logo=netlify&logoColor=white)
+
 
 *Built with ❤️ — TaskFlow OS v2.0*
